@@ -14,7 +14,7 @@ tabs.forEach(tab => {
     });
 });
 
-// Refresh top image every 30 seconds
+
 setInterval(() => {
     const mainImage =
         document.getElementById("mainImage");
@@ -23,4 +23,4 @@ setInterval(() => {
         "images/ZZ.png?t=" +
         new Date().getTime();
 
-}, 30000);
+}, 5000);
