@@ -37,11 +37,30 @@ body {
 
 .tabs {
     display: flex;
+    overflow-x: auto;
+    overflow-y: hidden;
+
     background: #222;
     border-bottom: 1px solid #333;
+
+    white-space: nowrap;
+
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+}
+
+.tabs::-webkit-scrollbar {
+    height: 6px;
+}
+
+.tabs::-webkit-scrollbar-thumb {
+    background: #555;
+    border-radius: 3px;
 }
 
 .tab {
+    flex: 0 0 auto;
+
     padding: 12px 20px;
     border: none;
     cursor: pointer;
@@ -50,6 +69,8 @@ body {
     color: #ccc;
 
     transition: background-color 0.2s ease;
+
+    white-space: nowrap;
 }
 
 .tab:hover {
