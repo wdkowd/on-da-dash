@@ -1,5 +1,4 @@
-const API_URL =
-    "https://prisoner-kept-phys-rocky.trycloudflare.com";
+const API_URL = "https://snake-amp-scientific-physically.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
