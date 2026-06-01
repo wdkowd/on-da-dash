@@ -5,9 +5,6 @@ from pathlib import Path
 
 SCRIPT_JS = "script.js"
 
-# Replace this exact string in script.js
-PLACEHOLDER = "API_URL_PLACEHOLDER"
-
 
 def update_script_js(tunnel_url):
     path = Path("script.js")
