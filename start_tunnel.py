@@ -10,18 +10,19 @@ PLACEHOLDER = "API_URL_PLACEHOLDER"
 
 
 def update_script_js(tunnel_url):
-    path = Path(SCRIPT_JS)
+    path = Path("script.js")
 
     text = path.read_text()
 
-    text = text.replace(
-        PLACEHOLDER,
-        tunnel_url
+    text = re.sub(
+        r'const\s+API_URL\s*=\s*"[^"]*"',
+        f'const API_URL = "{tunnel_url}"',
+        text
     )
 
     path.write_text(text)
 
-    print(f"Updated {SCRIPT_JS} with {tunnel_url}")
+    print(f"Updated script.js with {tunnel_url}")
 
 
 def main():
