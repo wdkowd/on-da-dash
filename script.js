@@ -1,5 +1,5 @@
 const API_URL =
-    "https://floors-dive-leeds-keyboards.trycloudflare.com";
+    "API_URL_PLACEHOLDER";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
