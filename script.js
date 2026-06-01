@@ -1,26 +1,214 @@
-const tabs = document.querySelectorAll(".tab");
-const tabImage = document.getElementById("tabImage");
+const API_URL =
+    "http://localhost:8000";
 
-tabs.forEach(tab => {
-    tab.addEventListener("click", () => {
+let lastUpdate = 0;
 
-        tabs.forEach(t => t.classList.remove("active"));
-        tab.classList.add("active");
+let currentTabFile = null;
 
-        const imagePath = tab.dataset.image;
+const mainImage =
+    document.getElementById("mainImage");
 
-        tabImage.src =
-            imagePath + "?t=" + new Date().getTime();
-    });
-});
+const tabImage =
+    document.getElementById("tabImage");
 
 
-setInterval(() => {
-    const mainImage =
-        document.getElementById("mainImage");
+// ----------------------------------
+// Load Main Dashboard Image (ZZ.png)
+// ----------------------------------
+
+function loadMainImage() {
 
     mainImage.src =
-        "images/ZZ.png?t=" +
-        new Date().getTime();
+        `${API_URL}/image/ZZ.png?t=${Date.now()}`;
+}
 
-}, 5000);
+
+// ----------------------------------
+// Load Selected Tab Image
+// ----------------------------------
+
+function loadTabImage() {
+
+    if (!currentTabFile) {
+        return;
+    }
+
+    tabImage.src =
+        `${API_URL}/image/${currentTabFile}?t=${Date.now()}`;
+}
+
+
+// ----------------------------------
+// Build Tabs Dynamically
+// ----------------------------------
+
+async function buildTabs() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/tabs`
+            );
+
+        const data =
+            await response.json();
+
+        const files =
+            data.files;
+
+        const tabsContainer =
+            document.getElementById(
+                "tabs"
+            );
+
+        tabsContainer.innerHTML = "";
+
+        if (files.length === 0) {
+            return;
+        }
+
+        currentTabFile =
+            files[0];
+
+        files.forEach(
+            (file, index) => {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+                button.className =
+                    "tab";
+
+                if (index === 0) {
+                    button.classList.add(
+                        "active"
+                    );
+                }
+
+                // Convert:
+                // 1_imgL.png -> 1
+                // 2_imgL.png -> 2
+
+                button.textContent =
+                    file.replace(
+                        "_dripL.png",
+                        ""
+                    );
+
+                button.onclick =
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                ".tab"
+                            )
+                            .forEach(
+                                t =>
+                                t.classList.remove(
+                                    "active"
+                                )
+                            );
+
+                        button.classList.add(
+                            "active"
+                        );
+
+                        currentTabFile =
+                            file;
+
+                        loadTabImage();
+
+                    };
+
+                tabsContainer.appendChild(
+                    button
+                );
+
+            }
+        );
+
+        loadTabImage();
+
+    }
+    catch(error) {
+
+        console.error(
+            "Failed to build tabs",
+            error
+        );
+
+    }
+
+}
+
+
+// ----------------------------------
+// Check For Image Updates
+// ----------------------------------
+
+async function checkForUpdates() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/status`
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            data.last_update >
+            lastUpdate
+        ) {
+
+            lastUpdate =
+                data.last_update;
+
+            loadMainImage();
+
+            loadTabImage();
+
+            console.log(
+                "Images refreshed"
+            );
+
+        }
+
+    }
+    catch(error) {
+
+        console.error(
+            "Status check failed",
+            error
+        );
+
+    }
+
+}
+
+
+// ----------------------------------
+// Startup
+// ----------------------------------
+
+async function initialize() {
+
+    await buildTabs();
+
+    loadMainImage();
+
+    checkForUpdates();
+
+    setInterval(
+        checkForUpdates,
+        2000
+    );
+
+}
+
+initialize();

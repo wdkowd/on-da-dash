@@ -1,97 +1,59 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
+
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Image Dashboard</title>
-    <link rel="stylesheet" href="styles.css">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>Trading Dashboard</title>
+
+    <link
+        rel="stylesheet"
+        href="styles.css">
+
 </head>
+
 <body>
 
-    <!-- Top Section -->
+    <!-- TOP IMAGE -->
+
     <div class="top-section">
+
         <img
             id="mainImage"
-            src="images/ZZ.png?v=1"
-            alt="Main Image"
-        >
+            alt="Main Dashboard">
+
     </div>
 
-    <!-- Bottom Section -->
+    <!-- BOTTOM SECTION -->
+
     <div class="bottom-section">
 
-        <div class="tabs">
-            <button class="tab active" data-image="images/AAPL_dripL.png">
-                AAPL
-            </button>
+        <!-- Tabs will be generated automatically -->
 
-            <button class="tab" data-image="images/AMD_dripL.png">
-                AMD
-            </button>
-
-            <button class="tab" data-image="images/AMZN_dripL.png">
-                AMZN
-            </button>
-
-            <button class="tab" data-image="images/BA_dripL.png">
-                BA
-            </button>
-
-            <button class="tab" data-image="images/GOOGL_dripL.png">
-                GOOGL
-            </button>
-
-            <button class="tab" data-image="images/INTC_dripL.png">
-                INTC
-            </button>
-
-            <button class="tab" data-image="images/IWM_dripL.png">
-                IWM
-            </button>
-
-            <button class="tab" data-image="images/JPM_dripL.png">
-                JPM
-            </button>
-
-            <button class="tab" data-image="images/META_dripL.png">
-                META
-            </button>
-
-            <button class="tab" data-image="images/MSFT_dripL.png">
-                MSFT
-            </button>
-
-            <button class="tab" data-image="images/NVDA_dripL.png">
-                NVDA
-            </button>
-
-            <button class="tab" data-image="images/QQQ_dripL.png">
-                QQQ
-            </button>
-
-            <button class="tab" data-image="images/SPY_dripL.png">
-                SPY
-            </button>
-
-            <button class="tab" data-image="images/TSLA_dripL.png">
-                TSLA
-            </button>
-
-            <button class="tab" data-image="images/UNH_dripL.png">
-                UNH
-            </button>
-
-            <button class="tab" data-image="images/WMT_dripL.png">
-                WMT
-            </button>
+        <div
+            id="tabs"
+            class="tabs">
         </div>
 
+        <!-- Selected tab image -->
+
         <div class="image-container">
-            <img id="tabImage" src="images/AAPL_dripL.png">
+
+            <img
+                id="tabImage"
+                alt="Tab Image">
+
         </div>
 
     </div>
 
     <script src="script.js"></script>
+
 </body>
+
 </html>
