@@ -1,5 +1,5 @@
 const API_URL =
-    "API_URL_PLACEHOLDER";
+    "https://prisoner-kept-phys-rocky.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
