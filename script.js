@@ -1,4 +1,4 @@
-const API_URL = "https://nuclear-shares-held-under.trycloudflare.com";
+const API_URL = "https://cemetery-eagle-honest-query.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
