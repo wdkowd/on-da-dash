@@ -1,4 +1,4 @@
-const API_URL = "https://snake-amp-scientific-physically.trycloudflare.com";
+const API_URL = "https://nuclear-shares-held-under.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
