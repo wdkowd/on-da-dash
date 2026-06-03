@@ -10,23 +10,18 @@ body {
 }
 
 .top-section {
-    height: 33vh;
-    flex: none;
-    border-bottom: 2px solid #333;
+    flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-
     background-color: #1a1a1a;
 }
 
 .bottom-section {
-    height: 67vh;
-    flex: none;
+    flex: 2;
     display: flex;
     flex-direction: column;
-
     background-color: #1a1a1a;
 }
 
