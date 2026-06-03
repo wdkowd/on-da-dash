@@ -148,7 +148,7 @@ def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True)
         autosize=True,
         margin=dict(l=20,r=20,t=40,b=20)
     )
-    fig.show()
+    # fig.show()
 
     if return_df:
         fig.write_html("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/"+ticker+"_opts.html",config={"responsive": True})
