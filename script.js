@@ -1,4 +1,4 @@
-const API_URL = "https://lease-knowledge-dense-payday.trycloudflare.com";
+const API_URL = "https://relying-kernel-principle-suddenly.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
