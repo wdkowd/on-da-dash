@@ -55,7 +55,7 @@ body {
 }
 
 .tabs {
-    flex: 0 0 25px;
+    flex: 0 0 10px;
 
     display: flex;
 
