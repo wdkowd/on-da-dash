@@ -11,20 +11,21 @@ body {
 
 .top-section {
     flex: 1;
+    border-bottom: 2px solid #333;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
+
     background-color: #1a1a1a;
 }
 
 .bottom-section {
     flex: 2;
-
-    min-height: 0;
-
     display: flex;
     flex-direction: column;
+
+    background-color: #1a1a1a;
 }
 
 .top-section img,
@@ -35,10 +36,7 @@ body {
 }
 
 .tabs {
-    flex: 0 0 60px;
-
     display: flex;
-
     overflow-x: auto;
     overflow-y: hidden;
 
@@ -49,9 +47,6 @@ body {
 
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
-
-    position: relative;
-    z-index: 10;
 }
 
 .tabs::-webkit-scrollbar {
@@ -66,10 +61,7 @@ body {
 .tab {
     flex: 0 0 auto;
 
-    height: 60px;
-
-    padding: 0 20px;
-
+    padding: 12px 20px;
     border: none;
     cursor: pointer;
 
@@ -93,13 +85,11 @@ body {
 
 .image-container {
     flex: 1;
-    min-height: 0;
-
-    overflow: hidden;
-
     display: flex;
     justify-content: center;
     align-items: center;
+
+    background-color: #181818;
 }
 
 .controls {
