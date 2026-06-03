@@ -33,7 +33,10 @@ body {
 }
 
 .tabs {
+    flex: 0 0 60px;
+
     display: flex;
+
     overflow-x: auto;
     overflow-y: hidden;
 
@@ -44,6 +47,9 @@ body {
 
     -webkit-overflow-scrolling: touch;
     scrollbar-width: thin;
+
+    position: relative;
+    z-index: 10;
 }
 
 .tabs::-webkit-scrollbar {
@@ -58,7 +64,10 @@ body {
 .tab {
     flex: 0 0 auto;
 
-    padding: 12px 20px;
+    height: 60px;
+
+    padding: 0 20px;
+
     border: none;
     cursor: pointer;
 
