@@ -1,9 +1,14 @@
+html,
+body {
+    margin: 0;
+    padding: 0;
+    height: 100vh;
+    overflow: hidden;
+}
+
 body {
     display: flex;
     flex-direction: column;
-    height: 100vh;
-    overflow: hidden;
-
     background: #121212;
     color: white;
 }
@@ -28,19 +33,21 @@ body {
     display: flex;
     flex-direction: column;
 }
+
 .image-container {
     flex: 1;
+
     min-height: 0;
+
+    overflow: hidden;
 
     display: flex;
     justify-content: center;
     align-items: center;
 }
+
 .top-section img,
 .image-container img {
-    width: auto;
-    height: auto;
-
     max-width: 100%;
     max-height: 100%;
 
@@ -48,17 +55,18 @@ body {
 }
 
 .tabs {
+    flex: 0 0 50px;
+
     display: flex;
+
     overflow-x: auto;
     overflow-y: hidden;
 
-    background: #222;
-    border-bottom: 1px solid #333;
-
     white-space: nowrap;
 
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
+    background: #222;
+
+    z-index: 10;
 }
 
 .tabs::-webkit-scrollbar {
