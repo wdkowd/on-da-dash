@@ -20,9 +20,11 @@ body {
 
 .bottom-section {
     flex: 2;
+
+    min-height: 0;
+
     display: flex;
     flex-direction: column;
-    background-color: #1a1a1a;
 }
 
 .top-section img,
@@ -35,21 +37,10 @@ body {
 .tabs {
     flex: 0 0 60px;
 
-    display: flex;
+    position: sticky;
+    top: 0;
 
-    overflow-x: auto;
-    overflow-y: hidden;
-
-    background: #222;
-    border-bottom: 1px solid #333;
-
-    white-space: nowrap;
-
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-
-    position: relative;
-    z-index: 10;
+    z-index: 100;
 }
 
 .tabs::-webkit-scrollbar {
@@ -91,11 +82,13 @@ body {
 
 .image-container {
     flex: 1;
+    min-height: 0;
+
+    overflow: hidden;
+
     display: flex;
     justify-content: center;
     align-items: center;
-
-    background-color: #181818;
 }
 
 .controls {
