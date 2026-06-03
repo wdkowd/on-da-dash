@@ -1,4 +1,4 @@
-const API_URL = "https://prospect-knowing-fitted-physicians.trycloudflare.com";
+const API_URL = "https://penalty-die-vacations-parish.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
@@ -11,6 +11,25 @@ const mainImage =
 const tabImage =
     document.getElementById("tabImage");
 
+const modal =
+    document.getElementById(
+        "plotModal"
+    );
+
+const iframe =
+    document.getElementById(
+        "plotFrame"
+    );
+
+const openPlotBtn =
+    document.getElementById(
+        "openPlotBtn"
+    );
+
+const closeModal =
+    document.getElementById(
+        "closeModal"
+    );
 
 // ----------------------------------
 // Load Main Dashboard Image (ZZ.png)
@@ -191,7 +210,53 @@ async function checkForUpdates() {
 
 }
 
+// ----------------------------------
+// Open Opts
+// ----------------------------------
+openPlotBtn.onclick =
+    () => {
 
+        if (!currentTabFile)
+            return;
+
+        const plotName =
+            currentTabFile.replace(
+                "_dripL.png",
+                "_opts.html"
+            );
+
+        iframe.src =
+            `${API_URL}/plot/${plotName}`;
+
+        modal.style.display =
+            "block";
+    };
+// ----------------------------------
+// Close Opts
+// ----------------------------------
+closeModal.onclick =
+    () => {
+
+        modal.style.display =
+            "none";
+
+        iframe.src = "";
+    };
+
+window.onclick =
+    event => {
+
+        if (
+            event.target === modal
+        ) {
+
+            modal.style.display =
+                "none";
+
+            iframe.src = "";
+        }
+
+    };
 // ----------------------------------
 // Startup
 // ----------------------------------

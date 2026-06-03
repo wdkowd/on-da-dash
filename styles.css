@@ -91,3 +91,69 @@ body {
 
     background-color: #181818;
 }
+
+.controls {
+    padding: 10px;
+    text-align: center;
+}
+
+#openPlotBtn {
+    padding: 10px 20px;
+    cursor: pointer;
+}
+
+.modal {
+    display: none;
+
+    position: fixed;
+
+    left: 0;
+    top: 0;
+
+    width: 100%;
+    height: 100%;
+
+    background: rgba(
+        0,
+        0,
+        0,
+        0.8
+    );
+
+    z-index: 1000;
+}
+
+.modal-content {
+
+    position: relative;
+
+    width: 80%;
+    height: 80%;
+
+    margin: 5% auto;
+
+    background: #1a1a1a;
+
+    border-radius: 8px;
+
+    overflow: hidden;
+}
+
+#closeModal {
+
+    position: absolute;
+
+    right: 15px;
+    top: 10px;
+
+    font-size: 30px;
+
+    cursor: pointer;
+
+    z-index: 1001;
+}
+
+#plotFrame {
+    width: 100%;
+    height: 100%;
+}

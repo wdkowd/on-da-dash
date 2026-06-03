@@ -30,6 +30,19 @@ def status():
 
     return {"last_update": latest_time}
 
+HTML_DIR = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs")
+@app.get("/plot/{filename}")
+def get_plot(filename: str):
+
+    plot_path = HTML_DIR / filename
+
+    if not plot_path.exists():
+        return JSONResponse(
+            {"error": "plot not found"},
+            status_code=404
+        )
+
+    return FileResponse(plot_path)
 
 @app.get("/image/{filename}")
 def image(filename: str):
