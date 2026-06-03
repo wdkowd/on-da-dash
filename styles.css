@@ -37,9 +37,21 @@ body {
 .tabs {
     flex: 0 0 60px;
 
-    position: sticky;
-    top: 0;
+    display: flex;
 
+    overflow-x: auto;
+    overflow-y: hidden;
+
+    background: #222;
+    border-bottom: 1px solid #333;
+
+    white-space: nowrap;
+
+    -webkit-overflow-scrolling: touch;
+    scrollbar-width: thin;
+
+    position: sticky;
+    top:0;
     z-index: 100;
 }
 
