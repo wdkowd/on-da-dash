@@ -1,4 +1,4 @@
-const API_URL = "https://penalty-die-vacations-parish.trycloudflare.com";
+const API_URL = "https://under-bench-snow-boat.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
