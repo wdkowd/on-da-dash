@@ -28,7 +28,14 @@ body {
     display: flex;
     flex-direction: column;
 }
+.image-container {
+    flex: 1;
+    min-height: 0;
 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
 .top-section img,
 .image-container img {
     width: auto;
@@ -90,11 +97,11 @@ body {
 
 .image-container {
     flex: 1;
-    min-height: 0;
-
     display: flex;
     justify-content: center;
     align-items: center;
+
+    background-color: #181818;
 }
 
 .controls {
