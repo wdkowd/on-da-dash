@@ -157,7 +157,7 @@ def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True)
 @app.post("/generate_plot/{tab}")
 def generate_plot_endpoint(tab):
 
-    plot_near_money_option_oi(tab)
+    optsdf = plot_near_money_option_oi(tab)
 
     return {
         "success": True
