@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = "https://conducted-views-immunology-formal.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
@@ -48,15 +48,17 @@ function loadMainImage() {
 
 const tabFrame =
     document.getElementById("tabFrame");
+    
+function loadTab() {
 
-function loadTab(tabFile) {
-
-    const htmlFile =
-        tabFile.replace("_dripL.png", ".html");
+    if (!currentTabFile) {
+        return;
+    }
 
     tabFrame.src =
         `${API_URL}/html/${htmlFile}?t=${Date.now()}`;
 }
+
 
 
 // ----------------------------------
@@ -140,7 +142,7 @@ async function buildTabs() {
                         currentTabFile =
                             file;
 
-                        loadTabImage();
+                        loadTab();
 
                     };
 
@@ -151,7 +153,7 @@ async function buildTabs() {
             }
         );
 
-        loadTabImage();
+        loadTab();
 
     }
     catch(error) {
@@ -192,7 +194,7 @@ async function checkForUpdates() {
 
             loadMainImage();
 
-            loadTabImage();
+            loadTab();
 
             console.log(
                 "Images refreshed"
