@@ -36,7 +36,7 @@ def status():
 
     return {"last_update": latest_time}
 
-HTML_DIR = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs")
+HTML_DIR = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/opts")
 @app.get("/plot/{filename}")
 def get_plot(filename: str):
 
@@ -151,7 +151,7 @@ def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True)
     # fig.show()
 
     if return_df:
-        fig.write_html("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/"+ticker+"_opts.html",config={"responsive": True})
+        fig.write_html("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/opts/"+ticker+"_opts.html",config={"responsive": True})
         return options_df
 
 @app.post("/generate_plot/{tab}")
@@ -162,3 +162,17 @@ def generate_plot_endpoint(tab):
     return {
         "success": True
     }
+
+from fastapi.responses import FileResponse
+from pathlib import Path
+
+HTML_DIR = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/overwatch")
+@app.get("/html/{filename}")
+def get_html(filename: str):
+
+    file_path = HTML_DIR / filename
+
+    if not file_path.exists():
+        return {"error": "not found"}
+
+    return FileResponse(file_path)
