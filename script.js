@@ -1,293 +1,119 @@
-const API_URL = "https://buffalo-craps-actress-min.trycloudflare.com";
-    // "http://localhost:8000";
+let tabs = [];
+let currentTab = null;
 
-let lastUpdate = 0;
+// -----------------------------
+// LIVE IMAGE REFRESH
+// -----------------------------
+function refreshImage() {
+    const img = document.getElementById("liveImage");
+    img.src = "/images/ZZ.png?t=" + Date.now();
+}
+setInterval(refreshImage, 2000);
 
-let currentTabFile = null;
 
-const mainImage =
-    document.getElementById("mainImage");
+// -----------------------------
+// LOAD DASH TABS
+// -----------------------------
+async function loadTabs() {
+    const res = await fetch("/api/dash-tabs");
+    tabs = await res.json();
 
-const tabImage =
-    document.getElementById("tabImage");
+    const tabBar = document.getElementById("tabBar");
 
-const modal =
-    document.getElementById(
-        "plotModal"
-    );
+    tabs.forEach((file, idx) => {
+        const tab = document.createElement("div");
+        tab.className = "tab";
+        tab.innerText = file.replace("_dash.html", "");
 
-const iframe =
-    document.getElementById(
-        "plotFrame"
-    );
+        tab.onclick = () => selectTab(file, tab);
 
-const openPlotBtn =
-    document.getElementById(
-        "openPlotBtn"
-    );
+        tabBar.appendChild(tab);
 
-const closeModal =
-    document.getElementById(
-        "closeModal"
-    );
-
-// ----------------------------------
-// Load Main Dashboard Image (ZZ.png)
-// ----------------------------------
-
-function loadMainImage() {
-
-    mainImage.src =
-        `${API_URL}/image/ZZ.png?t=${Date.now()}`;
+        if (idx === 0) {
+            selectTab(file, tab);
+        }
+    });
 }
 
 
-// ----------------------------------
-// Load Selected Tab Image
-// ----------------------------------
+// -----------------------------
+// SELECT DASH TAB
+// -----------------------------
+function selectTab(file, tabElement) {
+    currentTab = file;
 
-const tabFrame =
-    document.getElementById("tabFrame");
-    
-function loadTab() {
+    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
+    tabElement.classList.add("active");
 
-    if (!currentTabFile) {
-        return;
-    }
-
-    tabFrame.src =
-        `${API_URL}/html/${htmlFile}?t=${Date.now()}`;
+    document.getElementById("dashFrame").src =
+        "/graphs/overwatch/" + file + "?t=" + Date.now();
 }
 
 
+// -----------------------------
+// MODAL ELEMENTS
+// -----------------------------
+const modal = document.getElementById("modal");
+const optsFrame = document.getElementById("optsFrame");
 
-// ----------------------------------
-// Build Tabs Dynamically
-// ----------------------------------
 
-async function buildTabs() {
-
+// -----------------------------
+// BUTTON: REFRESH + OPEN OPTS
+// -----------------------------
+document.getElementById("optsBtn").onclick = async () => {
     try {
+        // 1. Tell server to regenerate opts files
+        const refreshRes = await fetch("/api/refresh-opts", {
+            method: "POST"
+        });
 
-        const response =
-            await fetch(
-                `${API_URL}/tabs`
-            );
+        const refreshData = await refreshRes.json();
 
-        const data =
-            await response.json();
+        if (!refreshData.success) {
+            alert("Failed to refresh opts");
+            return;
+        }
 
-        const files =
-            data.files;
-
-        const tabsContainer =
-            document.getElementById(
-                "tabs"
-            );
-
-        tabsContainer.innerHTML = "";
+        // 2. Get updated file list
+        const fileRes = await fetch("/api/opts-files");
+        const files = await fileRes.json();
 
         if (files.length === 0) {
+            alert("No opts files found");
             return;
         }
 
-        currentTabFile =
-            files[0];
+        // 3. Load newest file
+        const file = files[0];
 
-        files.forEach(
-            (file, index) => {
+        optsFrame.src =
+            "/graphs/opts/" + file + "?t=" + Date.now();
 
-                const button =
-                    document.createElement(
-                        "button"
-                    );
+        // 4. Open modal
+        modal.style.display = "block";
 
-                button.className =
-                    "tab";
-
-                if (index === 0) {
-                    button.classList.add(
-                        "active"
-                    );
-                }
-
-                // Convert:
-                // 1_imgL.png -> 1
-                // 2_imgL.png -> 2
-
-                button.textContent =
-                    file.replace(
-                        "_dripL.png",
-                        ""
-                    );
-
-                button.onclick =
-                    () => {
-
-                        document
-                            .querySelectorAll(
-                                ".tab"
-                            )
-                            .forEach(
-                                t =>
-                                t.classList.remove(
-                                    "active"
-                                )
-                            );
-
-                        button.classList.add(
-                            "active"
-                        );
-
-                        currentTabFile =
-                            file;
-
-                        loadTab();
-
-                    };
-
-                tabsContainer.appendChild(
-                    button
-                );
-
-            }
-        );
-
-        loadTab();
-
+    } catch (err) {
+        console.error(err);
+        alert("Error refreshing opts");
     }
-    catch(error) {
+};
 
-        console.error(
-            "Failed to build tabs",
-            error
-        );
 
+// -----------------------------
+// CLOSE MODAL
+// -----------------------------
+document.getElementById("closeModal").onclick = () => {
+    modal.style.display = "none";
+};
+
+window.onclick = (e) => {
+    if (e.target === modal) {
+        modal.style.display = "none";
     }
+};
 
-}
 
-
-// ----------------------------------
-// Check For Image Updates
-// ----------------------------------
-
-async function checkForUpdates() {
-
-    try {
-
-        const response =
-            await fetch(
-                `${API_URL}/status`
-            );
-
-        const data =
-            await response.json();
-
-        if (
-            data.last_update >
-            lastUpdate
-        ) {
-
-            lastUpdate =
-                data.last_update;
-
-            loadMainImage();
-
-            loadTab();
-
-            console.log(
-                "Images refreshed"
-            );
-
-        }
-
-    }
-    catch(error) {
-
-        console.error(
-            "Status check failed",
-            error
-        );
-
-    }
-
-}
-
-// ----------------------------------
-// Open Opts
-// ----------------------------------
-openPlotBtn.onclick =
-    async () => {
-        if (!currentTabFile)
-            return;
-
-        const tabNumber =currentTabFile.split("_")[0];
-        openPlotBtn.disabled = true;
-        openPlotBtn.textContent ="Generating...";
-
-        try {
-            const response =await fetch(`${API_URL}/generate_plot/${tabNumber}`,{method: "POST"});
-            const result = await response.json();
-            if (!result.success) {
-                throw new Error("Generation failed");
-            }
-            const plotName =`${tabNumber}_opts.html`;
-            iframe.src =`${API_URL}/plot/${plotName}?t=${Date.now()}`;
-            modal.style.display ="block";
-        }
-        catch(error) {
-            alert("Failed to generate plot");
-            console.error(error);
-        }
-        finally {
-            openPlotBtn.disabled = false;
-            openPlotBtn.textContent = "Open Interactive Chart";
-        }
-    };
-// ----------------------------------
-// Close Opts
-// ----------------------------------
-closeModal.onclick =
-    () => {
-
-        modal.style.display =
-            "none";
-
-        iframe.src = "";
-    };
-
-window.onclick =
-    event => {
-
-        if (
-            event.target === modal
-        ) {
-
-            modal.style.display =
-                "none";
-
-            iframe.src = "";
-        }
-
-    };
-// ----------------------------------
-// Startup
-// ----------------------------------
-
-async function initialize() {
-
-    await buildTabs();
-
-    loadMainImage();
-
-    checkForUpdates();
-
-    setInterval(
-        checkForUpdates,
-        2000
-    );
-
-}
-
-initialize();
+// -----------------------------
+// INIT
+// -----------------------------
+loadTabs();

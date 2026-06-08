@@ -1,174 +1,103 @@
 body {
     margin: 0;
+    font-family: Arial, sans-serif;
+    background: #0f0f0f;
+    color: white;
     height: 100vh;
     display: flex;
     flex-direction: column;
-    font-family: Arial, sans-serif;
-
-    background-color: #121212;
-    color: #ffffff;
 }
 
+/* TOP IMAGE (1/3 height) */
 .top-section {
     flex: 1;
-    border-bottom: 2px solid #333;
     display: flex;
     justify-content: center;
     align-items: center;
-    overflow: hidden;
-
-    background-color: #1a1a1a;
+    background: #111;
 }
 
-.bottom-section {
-    flex: 2;
-    display: flex;
-    flex-direction: column;
-
-    background-color: #1a1a1a;
-}
-
-.top-section img,
-.image-container img {
-    max-width: 100%;
+.top-section img {
     max-height: 100%;
+    max-width: 100%;
     object-fit: contain;
 }
 
-.tabs {
+/* TAB BAR */
+.tab-bar {
+    height: 50px;
     display: flex;
     overflow-x: auto;
-    overflow-y: hidden;
-
-    background: #222;
-    border-bottom: 1px solid #333;
-
+    background: #1a1a1a;
     white-space: nowrap;
-
-    -webkit-overflow-scrolling: touch;
-    scrollbar-width: thin;
-}
-
-.tabs::-webkit-scrollbar {
-    height: 6px;
-}
-
-.tabs::-webkit-scrollbar-thumb {
-    background: #555;
-    border-radius: 3px;
 }
 
 .tab {
-    flex: 0 0 auto;
-
     padding: 12px 20px;
-    border: none;
     cursor: pointer;
-
-    background: #2d2d2d;
-    color: #ccc;
-
-    transition: background-color 0.2s ease;
-
-    white-space: nowrap;
+    border-right: 1px solid #333;
+    flex: 0 0 auto;
 }
 
 .tab:hover {
-    background: #3a3a3a;
-    color: white;
+    background: #333;
 }
 
 .tab.active {
-    background: #4a90e2;
-    color: white;
+    background: #444;
 }
 
-.image-container {
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-
-    display: flex;
+/* BOTTOM SECTION (2/3 total remaining split visually) */
+.bottom-section {
+    flex: 2;
 }
 
-#tabFrame {
+.bottom-section iframe {
     width: 100%;
     height: 100%;
-
     border: none;
-
-    display: block;
 }
 
-.tab-container {
-    flex: 1;
-    min-height: 0;
-    overflow: hidden;
-}
-
-
-.controls {
-    padding: 10px;
-    text-align: center;
-}
-
-#openPlotBtn {
-    padding: 10px 20px;
+/* BUTTON */
+#optsBtn {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    padding: 10px 15px;
+    background: #222;
+    color: white;
+    border: 1px solid #555;
     cursor: pointer;
 }
 
+/* MODAL */
 .modal {
     display: none;
-
     position: fixed;
-
-    left: 0;
-    top: 0;
-
-    width: 100%;
-    height: 100%;
-
-    background: rgba(
-        0,
-        0,
-        0,
-        0.8
-    );
-
     z-index: 1000;
+    left: 0; top: 0;
+    width: 100%; height: 100%;
+    background: rgba(0,0,0,0.8);
 }
 
 .modal-content {
-
     position: relative;
-
     width: 80%;
     height: 80%;
-
     margin: 5% auto;
+    background: #111;
+}
 
-    background: #1a1a1a;
-
-    border-radius: 8px;
-
-    overflow: hidden;
+.modal-content iframe {
+    width: 100%;
+    height: 100%;
+    border: none;
 }
 
 #closeModal {
-
     position: absolute;
-
-    right: 15px;
-    top: 10px;
-
-    font-size: 30px;
-
+    top: 5px;
+    right: 10px;
+    font-size: 24px;
     cursor: pointer;
-
-    z-index: 1001;
-}
-
-#plotFrame {
-    width: 100%;
-    height: 100%;
 }
