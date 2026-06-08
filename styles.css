@@ -67,7 +67,7 @@ body {
 }
 
 .tabs::-webkit-scrollbar {
-    height: 6px;
+    height: 4px;
 }
 
 .tabs::-webkit-scrollbar-thumb {
@@ -78,7 +78,7 @@ body {
 .tab {
     flex: 0 0 auto;
 
-    padding: 12px 20px;
+    padding: 5px 10px;
     border: none;
     cursor: pointer;
 
