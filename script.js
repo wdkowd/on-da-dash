@@ -1,4 +1,8 @@
+<<<<<<< HEAD
 const API_URL = "https://cooked-his-semi-merry.trycloudflare.com";
+=======
+const API_URL = "https://lease-knowledge-dense-payday.trycloudflare.com";
+>>>>>>> parent of 7800af8... Update tunnel URL
     // "http://localhost:8000";
 
 // -----------------------------
