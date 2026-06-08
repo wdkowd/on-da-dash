@@ -1,4 +1,4 @@
-const API_URL = "https://knitting-standing-pan-mesa.trycloudflare.com";
+const API_URL = "https://under-bench-snow-boat.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
@@ -214,32 +214,22 @@ async function checkForUpdates() {
 // Open Opts
 // ----------------------------------
 openPlotBtn.onclick =
-    async () => {
+    () => {
+
         if (!currentTabFile)
             return;
 
-        const tabNumber =currentTabFile.split("_")[0];
-        openPlotBtn.disabled = true;
-        openPlotBtn.textContent ="Generating...";
+        const plotName =
+            currentTabFile.replace(
+                "_dripL.png",
+                "_opts.html"
+            );
 
-        try {
-            const response =await fetch(`${API_URL}/generate_plot/${tabNumber}`,{method: "POST"});
-            const result = await response.json();
-            if (!result.success) {
-                throw new Error("Generation failed");
-            }
-            const plotName =`${tabNumber}_opts.html`;
-            iframe.src =`${API_URL}/plot/${plotName}?t=${Date.now()}`;
-            modal.style.display ="block";
-        }
-        catch(error) {
-            alert("Failed to generate plot");
-            console.error(error);
-        }
-        finally {
-            openPlotBtn.disabled = false;
-            openPlotBtn.textContent = "Open Interactive Chart";
-        }
+        iframe.src =
+            `${API_URL}/plot/${plotName}`;
+
+        modal.style.display =
+            "block";
     };
 // ----------------------------------
 // Close Opts
