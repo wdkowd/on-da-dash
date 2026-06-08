@@ -8,35 +8,76 @@ import yfinance as yf
 import pandas as pd
 import plotly.express as px
 from datetime import datetime, timedelta
-from flask import Flask, send_from_directory, jsonify, render_template_string
-import os
-import subprocess
 
+app = FastAPI()
 
-app = Flask(__name__, static_folder=".", static_url_path="")
+IMAGE_DIR = Path('/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/images')
 
-BASE_DIR = os.path.dirname(os.path.abspath(__file__))
-
-DASH_DIR = os.path.join(BASE_DIR, "graphs", "overwatch")
-OPTS_DIR = os.path.join(BASE_DIR, "graphs", "opts")
-
-subprocess.run(
-    "lsof -ti :8000 | xargs kill -9",
-    shell=True
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["*"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
 )
-# -----------------------------
-# LIST FILES
-# -----------------------------
-def list_files(folder):
-    return sorted([
-        f for f in os.listdir(folder)
-        if f.endswith(".html")
-    ])
 
+@app.get("/status")
+def status():
 
-# -----------------------------
-# REFRESH LOGIC
-# -----------------------------
+    png_files = list(IMAGE_DIR.glob("*.png"))
+
+    if not png_files:
+        return {"last_update": 0}
+
+    latest_time = max(
+        f.stat().st_mtime
+        for f in png_files
+    )
+
+    return {"last_update": latest_time}
+
+HTML_DIR = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs")
+@app.get("/plot/{filename}")
+def get_plot(filename: str):
+
+    plot_path = HTML_DIR / filename
+
+    if not plot_path.exists():
+        return JSONResponse(
+            {"error": "plot not found"},
+            status_code=404
+        )
+
+    return FileResponse(plot_path)
+
+@app.get("/image/{filename}")
+def image(filename: str):
+
+    image_path = IMAGE_DIR / filename
+
+    if not image_path.exists():
+        return JSONResponse(
+            {"error": "File not found"},
+            status_code=404
+        )
+
+    return FileResponse(image_path)
+
+@app.get("/tabs")
+def tabs():
+
+    files = sorted(
+        [
+            f.name
+            for f in IMAGE_DIR.glob("*dripL.png")
+        ],
+        key=lambda x: (x.split("_")[0])
+    )
+
+    return {
+        "files": files
+    }
+
 def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True):
     stock = yf.Ticker(ticker)
     hist = stock.history(period="5d")
@@ -110,56 +151,14 @@ def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True)
     # fig.show()
 
     if return_df:
-        fig.write_html("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/opts/"+ticker+"_opts.html",config={"responsive": True})
+        fig.write_html("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/"+ticker+"_opts.html",config={"responsive": True})
         return options_df
 
+@app.post("/generate_plot/{tab}")
+def generate_plot_endpoint(tab):
 
+    optsdf = plot_near_money_option_oi(tab)
 
-# -----------------------------
-# API: REFRESH OPTS
-# -----------------------------
-@app.route("/api/refresh-opts", methods=["POST"])
-def api_refresh_opts():
-    try:
-        plot_near_money_option_oi()
-        return jsonify({"success": True})
-    except Exception as e:
-        return jsonify({"success": False, "error": str(e)}), 500
-
-
-# -----------------------------
-# API: DASH TABS
-# -----------------------------
-@app.route("/api/dash-tabs")
-def dash_tabs():
-    return jsonify(list_files(DASH_DIR))
-
-
-# -----------------------------
-# API: OPTS FILES
-# -----------------------------
-@app.route("/api/opts-files")
-def opts_files():
-    return jsonify(list_files(OPTS_DIR))
-
-
-# -----------------------------
-# STATIC FILE SERVING
-# -----------------------------
-@app.route("/graphs/<folder>/<file>")
-def graphs(folder, file):
-    return send_from_directory(os.path.join("graphs", folder), file)
-
-
-@app.route("/images/<path:filename>")
-def images(filename):
-    return send_from_directory("images", filename)
-
-
-@app.route("/")
-def index():
-    return send_from_directory(".", "index.html")
-
-
-if __name__ == "__main__":
-    app.run(host="0.0.0.0", port=8000, debug=True)
+    return {
+        "success": True
+    }

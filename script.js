@@ -1,131 +1,289 @@
-<<<<<<< HEAD
-const API_URL = "https://cooked-his-semi-merry.trycloudflare.com";
-=======
-const API_URL = "https://lease-knowledge-dense-payday.trycloudflare.com";
->>>>>>> parent of 7800af8... Update tunnel URL
+const API_URL = "https://twice-cosmetics-handhelds-auctions.trycloudflare.com";
     // "http://localhost:8000";
 
-// -----------------------------
-// LIVE IMAGE REFRESH
-// -----------------------------
-function refreshImage() {
-    const img = document.getElementById("liveImage");
-    img.src = `${API_URL}/images/ZZ.png?t=` + Date.now();
-}
-setInterval(refreshImage, 2000);
+let lastUpdate = 0;
 
+let currentTabFile = null;
 
-// -----------------------------
-// STATE
-// -----------------------------
-let tabs = [];
-let currentTab = null;
+const mainImage =
+    document.getElementById("mainImage");
 
+const tabImage =
+    document.getElementById("tabImage");
 
-// -----------------------------
-// LOAD DASH TABS
-// -----------------------------
-async function loadTabs() {
-    console.log("Loading tabs");
+const modal =
+    document.getElementById(
+        "plotModal"
+    );
 
-    const response = await fetch("/api/dash-tabs");
-    const files = await response.json();
+const iframe =
+    document.getElementById(
+        "plotFrame"
+    );
 
-    console.log(files);
+const openPlotBtn =
+    document.getElementById(
+        "openPlotBtn"
+    );
 
-    const tabBar = document.getElementById("tabBar");
+const closeModal =
+    document.getElementById(
+        "closeModal"
+    );
 
-    files.forEach(file => {
-        const button = document.createElement("button");
+// ----------------------------------
+// Load Main Dashboard Image (ZZ.png)
+// ----------------------------------
 
-        button.textContent = file;
-        button.style.margin = "5px";
+function loadMainImage() {
 
-        tabBar.appendChild(button);
-
-        console.log("Added", file);
-    });
+    mainImage.src =
+        `${API_URL}/image/ZZ.png?t=${Date.now()}`;
 }
 
 
-// -----------------------------
-// SELECT TAB
-// -----------------------------
-function selectTab(file, tabElement) {
-    currentTab = file;
+// ----------------------------------
+// Load Selected Tab Image
+// ----------------------------------
 
-    document.querySelectorAll(".tab").forEach(t => t.classList.remove("active"));
-    tabElement.classList.add("active");
+function loadTabImage() {
 
-    document.getElementById("dashFrame").src =
-        `${API_URL}/graphs/overwatch/` + file + "?t=" + Date.now();
+    if (!currentTabFile) {
+        return;
+    }
+
+    tabImage.src =
+        `${API_URL}/image/${currentTabFile}?t=${Date.now()}`;
 }
 
 
-// -----------------------------
-// MODAL ELEMENTS
-// -----------------------------
-const modal = document.getElementById("modal");
-const optsFrame = document.getElementById("optsFrame");
+// ----------------------------------
+// Build Tabs Dynamically
+// ----------------------------------
 
+async function buildTabs() {
 
-// -----------------------------
-// OPTS BUTTON (REFRESH + LOAD)
-// -----------------------------
-document.getElementById("optsBtn").onclick = async () => {
     try {
-        // 1. trigger server refresh
-        const refreshRes = await fetch(`${API_URL}/api/refresh-opts`, {
-            method: "POST"
-        });
 
-        const refreshData = await refreshRes.json();
+        const response =
+            await fetch(
+                `${API_URL}/tabs`
+            );
 
-        if (!refreshData.success) {
-            alert("Failed to refresh opts");
+        const data =
+            await response.json();
+
+        const files =
+            data.files;
+
+        const tabsContainer =
+            document.getElementById(
+                "tabs"
+            );
+
+        tabsContainer.innerHTML = "";
+
+        if (files.length === 0) {
             return;
         }
 
-        // 2. get updated file list
-        const fileRes = await fetch(`${API_URL}/api/opts-files`);
-        const files = await fileRes.json();
+        currentTabFile =
+            files[0];
 
-        if (!files.length) {
-            alert("No opts files found");
-            return;
+        files.forEach(
+            (file, index) => {
+
+                const button =
+                    document.createElement(
+                        "button"
+                    );
+
+                button.className =
+                    "tab";
+
+                if (index === 0) {
+                    button.classList.add(
+                        "active"
+                    );
+                }
+
+                // Convert:
+                // 1_imgL.png -> 1
+                // 2_imgL.png -> 2
+
+                button.textContent =
+                    file.replace(
+                        "_dripL.png",
+                        ""
+                    );
+
+                button.onclick =
+                    () => {
+
+                        document
+                            .querySelectorAll(
+                                ".tab"
+                            )
+                            .forEach(
+                                t =>
+                                t.classList.remove(
+                                    "active"
+                                )
+                            );
+
+                        button.classList.add(
+                            "active"
+                        );
+
+                        currentTabFile =
+                            file;
+
+                        loadTabImage();
+
+                    };
+
+                tabsContainer.appendChild(
+                    button
+                );
+
+            }
+        );
+
+        loadTabImage();
+
+    }
+    catch(error) {
+
+        console.error(
+            "Failed to build tabs",
+            error
+        );
+
+    }
+
+}
+
+
+// ----------------------------------
+// Check For Image Updates
+// ----------------------------------
+
+async function checkForUpdates() {
+
+    try {
+
+        const response =
+            await fetch(
+                `${API_URL}/status`
+            );
+
+        const data =
+            await response.json();
+
+        if (
+            data.last_update >
+            lastUpdate
+        ) {
+
+            lastUpdate =
+                data.last_update;
+
+            loadMainImage();
+
+            loadTabImage();
+
+            console.log(
+                "Images refreshed"
+            );
+
         }
 
-        // 3. load newest file
-        const file = files[0];
-
-        optsFrame.src =
-            `${API_URL}/graphs/opts/` + file + "?t=" + Date.now();
-
-        // 4. open modal
-        modal.style.display = "block";
-
-    } catch (err) {
-        console.error(err);
-        alert("Error refreshing opts");
     }
-};
+    catch(error) {
 
+        console.error(
+            "Status check failed",
+            error
+        );
 
-// -----------------------------
-// CLOSE MODAL
-// -----------------------------
-document.getElementById("closeModal").onclick = () => {
-    modal.style.display = "none";
-};
-
-window.onclick = (e) => {
-    if (e.target === modal) {
-        modal.style.display = "none";
     }
-};
 
+}
 
-// -----------------------------
-// INIT
-// -----------------------------
-loadTabs();
+// ----------------------------------
+// Open Opts
+// ----------------------------------
+openPlotBtn.onclick =
+    async () => {
+        if (!currentTabFile)
+            return;
+
+        const tabNumber =currentTabFile.split("_")[0];
+        openPlotBtn.disabled = true;
+        openPlotBtn.textContent ="Generating...";
+
+        try {
+            const response =await fetch(`${API_URL}/generate_plot/${tabNumber}`,{method: "POST"});
+            const result = await response.json();
+            if (!result.success) {
+                throw new Error("Generation failed");
+            }
+            const plotName =`${tabNumber}_opts.html`;
+            iframe.src =`${API_URL}/plot/${plotName}?t=${Date.now()}`;
+            modal.style.display ="block";
+        }
+        catch(error) {
+            alert("Failed to generate plot");
+            console.error(error);
+        }
+        finally {
+            openPlotBtn.disabled = false;
+            openPlotBtn.textContent = "Open Interactive Chart";
+        }
+    };
+// ----------------------------------
+// Close Opts
+// ----------------------------------
+closeModal.onclick =
+    () => {
+
+        modal.style.display =
+            "none";
+
+        iframe.src = "";
+    };
+
+window.onclick =
+    event => {
+
+        if (
+            event.target === modal
+        ) {
+
+            modal.style.display =
+                "none";
+
+            iframe.src = "";
+        }
+
+    };
+// ----------------------------------
+// Startup
+// ----------------------------------
+
+async function initialize() {
+
+    await buildTabs();
+
+    loadMainImage();
+
+    checkForUpdates();
+
+    setInterval(
+        checkForUpdates,
+        2000
+    );
+
+}
+
+initialize();

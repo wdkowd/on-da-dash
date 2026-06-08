@@ -1,36 +1,84 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
-    <meta charset="UTF-8" />
-    <title>Dashboard Viewer</title>
-    <link rel="stylesheet" href="styles.css" />
+
+    <meta charset="UTF-8">
+
+    <meta
+        name="viewport"
+        content="width=device-width, initial-scale=1.0">
+
+    <title>X00 On Da Dash</title>
+
+    <link
+        rel="stylesheet"
+        href="styles.css">
+
 </head>
+
 <body>
 
-    <!-- TOP IMAGE SECTION -->
+    <!-- TOP IMAGE -->
+
     <div class="top-section">
-        <img id="liveImage" src="/images/ZZ.png?t=0" />
+
+        <img
+            id="mainImage"
+            alt="Main Dashboard">
+
     </div>
 
-    <!-- TAB BAR -->
-    <div class="tab-bar" id="tabBar"></div>
+    <!-- BOTTOM SECTION -->
 
-    <!-- BOTTOM DASHBOARD -->
     <div class="bottom-section">
-        <iframe id="dashFrame"></iframe>
+
+        <!-- Tabs will be generated automatically -->
+
+        <div
+            id="tabs"
+            class="tabs">
+        </div>
+
+        <!-- Selected tab image -->
+
+        <div class="image-container">
+
+            <img
+                id="tabImage"
+                alt="Tab Image">
+        
+        </div>
+        
+        <div class="controls">
+        
+            <button id="openPlotBtn">
+                OPTS CHAIN
+            </button>
+        
+        </div>
+
     </div>
 
-    <!-- OPTS BUTTON -->
-    <button id="optsBtn">Open Options Graph</button>
+    <div id="plotModal" class="modal">
 
-    <!-- MODAL -->
-    <div id="modal" class="modal">
         <div class="modal-content">
+    
             <span id="closeModal">&times;</span>
-            <iframe id="optsFrame"></iframe>
+    
+            <iframe
+                id="plotFrame"
+                width="100%"
+                height="100%"
+                frameborder="0">
+            </iframe>
+    
         </div>
+    
     </div>
 
     <script src="script.js"></script>
+
 </body>
+
 </html>
