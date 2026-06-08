@@ -36,11 +36,12 @@ def status():
 
     return {"last_update": latest_time}
 
-HTML_DIR = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs")
+HTML_DIR_OPTS = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/opts")
+HTML_DIR_PLT = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/overwatch")
 @app.get("/plot/{filename}")
 def get_plot(filename: str):
 
-    plot_path = HTML_DIR / filename
+    plot_path = HTML_DIR_OPTS / filename
 
     if not plot_path.exists():
         return JSONResponse(
@@ -69,7 +70,7 @@ def tabs():
     files = sorted(
         [
             f.name
-            for f in HTML_DIR.glob("*_dash.html")
+            for f in HTML_DIR_PLT.glob("*_dash.html")
         ],
         key=lambda x: str(x.split("_")[0])
     )
@@ -81,7 +82,7 @@ def tabs():
 @app.get("/dash/{filename}")
 def dash(filename: str):
 
-    dash_path = HTML_DIR / filename
+    dash_path = HTML_DIR_PLT / filename
 
     if not dash_path.exists():
         return JSONResponse(
@@ -164,7 +165,7 @@ def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True)
     # fig.show()
 
     if return_df:
-        fig.write_html("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/"+ticker+"_opts.html",config={"responsive": True})
+        fig.write_html("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/opts/"+ticker+"_opts.html",config={"responsive": True})
         return options_df
 
 @app.post("/generate_plot/{tab}")

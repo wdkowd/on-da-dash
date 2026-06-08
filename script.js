@@ -1,4 +1,4 @@
-const API_URL = "https://seat-jumping-lisa-vacation.trycloudflare.com";
+const API_URL = "https://boutique-dependence-aluminium-substantially.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
@@ -185,7 +185,7 @@ openPlotBtn.onclick =
             currentTabFile.split("_")[0];
 
         openPlotBtn.disabled = true;
-        openPlotBtn.textContent = "Generating...";
+        openPlotBtn.textContent = "...";
 
         try {
 
@@ -218,7 +218,7 @@ openPlotBtn.onclick =
         finally {
 
             openPlotBtn.disabled = false;
-            openPlotBtn.textContent = "OPTS CHAIN";
+            openPlotBtn.textContent = "Os";
 
         }
 
