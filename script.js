@@ -1,4 +1,4 @@
-const API_URL = "https://reprints-encounter-store-merry.trycloudflare.com";
+const API_URL = "https://identified-molecular-scholar-phone.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
