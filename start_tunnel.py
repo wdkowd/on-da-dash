@@ -24,16 +24,12 @@ def update_script_js(tunnel_url):
 
 def main():
 
-    print("Starting FastAPI server...")
+    print("Starting Flask server...")
 
-    uvicorn_proc = subprocess.Popen(
+    flask_proc = subprocess.Popen(
         [
-            "uvicorn",
-            "server:app",
-            "--host",
-            "0.0.0.0",
-            "--port",
-            "8000",
+            "python3",
+            "server.py"
         ]
     )
 
@@ -80,10 +76,10 @@ def main():
         return
 
     try:
-        uvicorn_proc.wait()
+        flask_proc.wait()
     except KeyboardInterrupt:
         print("\nStopping processes...")
-        uvicorn_proc.terminate()
+        flask_proc.terminate()
         tunnel_proc.terminate()
 
 
