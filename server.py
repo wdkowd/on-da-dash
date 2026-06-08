@@ -69,14 +69,27 @@ def tabs():
     files = sorted(
         [
             f.name
-            for f in IMAGE_DIR.glob("*dripL.png")
+            for f in HTML_DIR.glob("*_dash.html")
         ],
-        key=lambda x: (x.split("_")[0])
+        key=lambda x: int(x.split("_")[0])
     )
 
     return {
         "files": files
     }
+
+@app.get("/dash/{filename}")
+def dash(filename: str):
+
+    dash_path = HTML_DIR / filename
+
+    if not dash_path.exists():
+        return JSONResponse(
+            {"error": "dash not found"},
+            status_code=404
+        )
+
+    return FileResponse(dash_path)
 
 def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True):
     stock = yf.Ticker(ticker)

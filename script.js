@@ -1,64 +1,55 @@
-const API_URL = "https://newsletter-writing-coordinate-graduated.trycloudflare.com";
-    // "http://localhost:8000";
+const API_URL = window.location.origin;
 
 let lastUpdate = 0;
-
 let currentTabFile = null;
 
-const mainImage =
-    document.getElementById("mainImage");
+const mainImage = document.getElementById("mainImage");
 
-const tabImage =
-    document.getElementById("tabImage");
+const dashFrame =
+    document.getElementById("dashFrame");
 
 const modal =
-    document.getElementById(
-        "plotModal"
-    );
+    document.getElementById("plotModal");
 
 const iframe =
-    document.getElementById(
-        "plotFrame"
-    );
+    document.getElementById("plotFrame");
 
 const openPlotBtn =
-    document.getElementById(
-        "openPlotBtn"
-    );
+    document.getElementById("openPlotBtn");
 
 const closeModal =
-    document.getElementById(
-        "closeModal"
-    );
+    document.getElementById("closeModal");
+
 
 // ----------------------------------
-// Load Main Dashboard Image (ZZ.png)
+// MAIN IMAGE
 // ----------------------------------
 
 function loadMainImage() {
 
     mainImage.src =
         `${API_URL}/image/ZZ.png?t=${Date.now()}`;
+
 }
 
 
 // ----------------------------------
-// Load Selected Tab Image
+// DASHBOARD HTML
 // ----------------------------------
 
-function loadTabImage() {
+function loadDashGraph() {
 
-    if (!currentTabFile) {
+    if (!currentTabFile)
         return;
-    }
 
-    tabImage.src =
-        `${API_URL}/image/${currentTabFile}?t=${Date.now()}`;
+    dashFrame.src =
+        `${API_URL}/dash/${currentTabFile}?t=${Date.now()}`;
+
 }
 
 
 // ----------------------------------
-// Build Tabs Dynamically
+// BUILD TABS
 // ----------------------------------
 
 async function buildTabs() {
@@ -77,15 +68,12 @@ async function buildTabs() {
             data.files;
 
         const tabsContainer =
-            document.getElementById(
-                "tabs"
-            );
+            document.getElementById("tabs");
 
         tabsContainer.innerHTML = "";
 
-        if (files.length === 0) {
+        if (!files.length)
             return;
-        }
 
         currentTabFile =
             files[0];
@@ -94,62 +82,41 @@ async function buildTabs() {
             (file, index) => {
 
                 const button =
-                    document.createElement(
-                        "button"
-                    );
+                    document.createElement("button");
 
                 button.className =
                     "tab";
 
-                if (index === 0) {
-                    button.classList.add(
-                        "active"
-                    );
-                }
-
-                // Convert:
-                // 1_imgL.png -> 1
-                // 2_imgL.png -> 2
+                if (index === 0)
+                    button.classList.add("active");
 
                 button.textContent =
-                    file.replace(
-                        "_dripL.png",
-                        ""
-                    );
+                    file.replace("_dash.html", "");
 
                 button.onclick =
                     () => {
 
                         document
-                            .querySelectorAll(
-                                ".tab"
-                            )
+                            .querySelectorAll(".tab")
                             .forEach(
-                                t =>
-                                t.classList.remove(
-                                    "active"
-                                )
+                                t => t.classList.remove("active")
                             );
 
-                        button.classList.add(
-                            "active"
-                        );
+                        button.classList.add("active");
 
                         currentTabFile =
                             file;
 
-                        loadTabImage();
+                        loadDashGraph();
 
                     };
 
-                tabsContainer.appendChild(
-                    button
-                );
+                tabsContainer.appendChild(button);
 
             }
         );
 
-        loadTabImage();
+        loadDashGraph();
 
     }
     catch(error) {
@@ -165,7 +132,7 @@ async function buildTabs() {
 
 
 // ----------------------------------
-// Check For Image Updates
+// STATUS CHECK
 // ----------------------------------
 
 async function checkForUpdates() {
@@ -190,85 +157,101 @@ async function checkForUpdates() {
 
             loadMainImage();
 
-            loadTabImage();
-
-            console.log(
-                "Images refreshed"
-            );
+            loadDashGraph();
 
         }
 
     }
     catch(error) {
 
-        console.error(
-            "Status check failed",
-            error
-        );
+        console.error(error);
 
     }
 
 }
 
+
 // ----------------------------------
-// Open Opts
+// OPEN OPTS
 // ----------------------------------
+
 openPlotBtn.onclick =
     async () => {
+
         if (!currentTabFile)
             return;
 
-        const tabNumber =currentTabFile.split("_")[0];
+        const tabNumber =
+            currentTabFile.split("_")[0];
+
         openPlotBtn.disabled = true;
-        openPlotBtn.textContent ="Generating...";
+        openPlotBtn.textContent = "Generating...";
 
         try {
-            const response =await fetch(`${API_URL}/generate_plot/${tabNumber}`,{method: "POST"});
-            const result = await response.json();
-            if (!result.success) {
-                throw new Error("Generation failed");
-            }
-            const plotName =`${tabNumber}_opts.html`;
-            iframe.src =`${API_URL}/plot/${plotName}?t=${Date.now()}`;
-            modal.style.display ="block";
+
+            const response =
+                await fetch(
+                    `${API_URL}/generate_plot/${tabNumber}`,
+                    {
+                        method: "POST"
+                    }
+                );
+
+            const result =
+                await response.json();
+
+            if (!result.success)
+                throw new Error();
+
+            iframe.src =
+                `${API_URL}/plot/${tabNumber}_opts.html?t=${Date.now()}`;
+
+            modal.style.display =
+                "block";
+
         }
         catch(error) {
-            alert("Failed to generate plot");
+
             console.error(error);
+
         }
         finally {
+
             openPlotBtn.disabled = false;
-            openPlotBtn.textContent = "Open Interactive Chart";
+            openPlotBtn.textContent = "OPTS CHAIN";
+
         }
+
     };
+
+
 // ----------------------------------
-// Close Opts
+// CLOSE MODAL
 // ----------------------------------
+
 closeModal.onclick =
     () => {
 
-        modal.style.display =
-            "none";
-
+        modal.style.display = "none";
         iframe.src = "";
+
     };
 
 window.onclick =
     event => {
 
-        if (
-            event.target === modal
-        ) {
+        if (event.target === modal) {
 
-            modal.style.display =
-                "none";
-
+            modal.style.display = "none";
             iframe.src = "";
+
         }
 
     };
+
+
 // ----------------------------------
-// Startup
+// STARTUP
 // ----------------------------------
 
 async function initialize() {
@@ -276,8 +259,6 @@ async function initialize() {
     await buildTabs();
 
     loadMainImage();
-
-    checkForUpdates();
 
     setInterval(
         checkForUpdates,
