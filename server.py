@@ -44,7 +44,7 @@ def get_plot(filename: str):
 
     if not plot_path.exists():
         return JSONResponse(
-            {"error": "plot na " + plot_path},
+            {"error": "plot na "},
             status_code=404
         )
 
