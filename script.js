@@ -1,4 +1,4 @@
-const API_URL = "https://wherever-latin-theorem-reg.trycloudflare.com";
+const API_URL = "https://principle-disclosure-lead-articles.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
