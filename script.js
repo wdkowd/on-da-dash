@@ -1,4 +1,4 @@
-const API_URL = "https://principle-disclosure-lead-articles.trycloudflare.com";
+const API_URL = "https://pdas-wait-metric-rely.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
