@@ -1,4 +1,4 @@
-const API_URL = "https://twice-cosmetics-handhelds-auctions.trycloudflare.com";
+const API_URL = "https://anti-performances-arising-automobile.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
