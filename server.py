@@ -71,7 +71,7 @@ def tabs():
             f.name
             for f in HTML_DIR.glob("*_dash.html")
         ],
-        key=lambda x: int(x.split("_")[0])
+        key=lambda x: (x.split("_")[0])
     )
 
     return {
