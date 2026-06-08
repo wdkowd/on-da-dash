@@ -10,6 +10,8 @@ import plotly.express as px
 from datetime import datetime, timedelta
 from flask import Flask, send_from_directory, jsonify, render_template_string
 import os
+import subprocess
+
 
 app = Flask(__name__, static_folder=".", static_url_path="")
 
@@ -18,7 +20,10 @@ BASE_DIR = os.path.dirname(os.path.abspath(__file__))
 DASH_DIR = os.path.join(BASE_DIR, "graphs", "overwatch")
 OPTS_DIR = os.path.join(BASE_DIR, "graphs", "opts")
 
-
+subprocess.run(
+    "lsof -ti :8000 | xargs kill -9",
+    shell=True
+)
 # -----------------------------
 # LIST FILES
 # -----------------------------

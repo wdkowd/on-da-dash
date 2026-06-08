@@ -1,4 +1,4 @@
-const API_URL = "https://exhaust-improved-eric-clean.trycloudflare.com";
+const API_URL = "https://bruce-formal-minimum-rice.trycloudflare.com";
     // "http://localhost:8000";
 
 // -----------------------------
