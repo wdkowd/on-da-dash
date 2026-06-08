@@ -1,4 +1,4 @@
-const API_URL = "https://anti-performances-arising-automobile.trycloudflare.com";
+const API_URL = "https://rep-short-say-gorgeous.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
