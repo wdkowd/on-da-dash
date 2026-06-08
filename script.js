@@ -1,4 +1,4 @@
-const API_URL = window.location.origin;
+const API_URL = "https://wherever-latin-theorem-reg.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
