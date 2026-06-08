@@ -116,7 +116,7 @@ def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True)
 @app.route("/api/refresh-opts", methods=["POST"])
 def api_refresh_opts():
     try:
-        refreshopts()
+        plot_near_money_option_oi()
         return jsonify({"success": True})
     except Exception as e:
         return jsonify({"success": False, "error": str(e)}), 500
