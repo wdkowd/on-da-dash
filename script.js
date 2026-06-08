@@ -1,4 +1,4 @@
-const API_URL = "https://gadgets-prophet-later-print.trycloudflare.com";
+const API_URL = "https://buffalo-craps-actress-min.trycloudflare.com";
     // "http://localhost:8000";
 
 let lastUpdate = 0;
