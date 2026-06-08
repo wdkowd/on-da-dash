@@ -1,4 +1,4 @@
-const API_URL = "https://enrolled-porcelain-while-work.trycloudflare.com";
+const API_URL = "https://reprints-encounter-store-merry.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
