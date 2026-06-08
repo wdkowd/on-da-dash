@@ -22,23 +22,24 @@ let currentTab = null;
 // LOAD DASH TABS
 // -----------------------------
 async function loadTabs() {
-    const res = await fetch(`${API_URL}/api/dash-tabs`);
-    tabs = await res.json();
+    console.log("Loading tabs");
+
+    const response = await fetch("/api/dash-tabs");
+    const files = await response.json();
+
+    console.log(files);
 
     const tabBar = document.getElementById("tabBar");
 
-    tabs.forEach((file, idx) => {
-        const tab = document.createElement("div");
-        tab.className = "tab";
-        tab.innerText = file.replace("_dash.html", "");
+    files.forEach(file => {
+        const button = document.createElement("button");
 
-        tab.onclick = () => selectTab(file, tab);
+        button.textContent = file;
+        button.style.margin = "5px";
 
-        tabBar.appendChild(tab);
+        tabBar.appendChild(button);
 
-        if (idx === 0) {
-            selectTab(file, tab);
-        }
+        console.log("Added", file);
     });
 }
 
