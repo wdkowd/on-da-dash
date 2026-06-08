@@ -118,6 +118,7 @@ body {
     padding: 5px 10px;
     cursor: pointer;
     background: #222;
+    color: #ccc;
 }
 
 .modal {
