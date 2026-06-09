@@ -1,4 +1,4 @@
-const API_URL = "https://condo-life-appointed-watches.trycloudflare.com";
+const API_URL = "https://sydney-ink-providing-oxygen.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;

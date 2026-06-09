@@ -11,12 +11,11 @@ body {
 
 .top-section {
     flex: 1;
-    border-bottom: 2px solid #333;
+    border-bottom: 1px solid #333;
     display: flex;
     justify-content: center;
     align-items: center;
     overflow: hidden;
-
     background-color: #1a1a1a;
 }
 
@@ -67,12 +66,12 @@ body {
 }
 
 .tabs::-webkit-scrollbar {
-    height: 4px;
+    height: 1px;
 }
 
 .tabs::-webkit-scrollbar-thumb {
     background: #555;
-    border-radius: 3px;
+    border-radius: 1px;
 }
 
 .tab {
