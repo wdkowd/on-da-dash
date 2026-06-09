@@ -92,7 +92,7 @@ def dash(filename: str):
 
     return FileResponse(dash_path)
 
-def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True):
+def plot_near_money_option_oi(ticker,min_days_out=3,max_days_out=14,strike_pct=0.02,return_df=True):
     stock = yf.Ticker(ticker)
     hist = stock.history(period="5d")
     if hist.empty:
@@ -101,11 +101,12 @@ def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True)
     lower_strike = ref_price * (1 - strike_pct)
     upper_strike = ref_price * (1 + strike_pct)
     today = datetime.now().date()
-    max_date = today + timedelta(days=days_out)
+    min_date = today + timedelta(days=min_days_out)
+    max_date = today + timedelta(days=max_days_out)
     all_options = []
     for exp_str in stock.options:
         exp_date = datetime.strptime(exp_str, "%Y-%m-%d").date()
-        if exp_date > max_date:
+        if (exp_date < min_date)|(exp_date > max_date):
             continue
         chain = stock.option_chain(exp_str)
         calls = chain.calls.copy()
@@ -146,7 +147,7 @@ def plot_near_money_option_oi(ticker,days_out=14,strike_pct=0.02,return_df=True)
     },
         title=(
             f"{ticker} Opts "
-            f"(Exp ≤ {days_out} Days, "
+            f"(Exp {min_days_out} - {max_days_out} Days, "
             f"{ref_price} ±{strike_pct:.0%})"
         )
     )
