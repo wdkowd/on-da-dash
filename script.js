@@ -1,4 +1,4 @@
-const API_URL = "https://sydney-ink-providing-oxygen.trycloudflare.com";
+const API_URL = "https://racial-junior-excuse-extraordinary.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
