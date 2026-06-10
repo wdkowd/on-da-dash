@@ -125,32 +125,33 @@ def plot_near_money_option_oi(ticker,min_days_out=3,max_days_out=14,strike_pct=0
     options_df["volume"] = (options_df["volume"].fillna(0).astype(float))
 
     fig = px.scatter_3d(
-    options_df,
-    x="expiration",
-    y="strike",
-    z="openInterest",
-    color="option_type",
-    color_discrete_map={
-        "Call": "#00FF88",
-        "Put": "#FF4444"
-    },
-    size="volume",
-    size_max=25,
-    template="plotly_dark",
-    hover_data={
-        "contractSymbol": True,
-        "bid": ":.2f",
-        "ask": ":.2f",
-        "lastPrice": ":.2f",
-        "volume": True,
-        "openInterest": True
-    },
-        title=(
-            f"{ticker} Opts "
-            f"(Exp {min_days_out} - {max_days_out} Days, "
-            f"{ref_price} ±{strike_pct:.0%})"
+        options_df,
+        x="expiration",
+        y="strike",
+        z="openInterest",
+        color="option_type",
+        color_discrete_map={
+            "Call": "#00FF88",
+            "Put": "#FF4444"
+        },
+        size="volume",
+        size_max=25,
+        template="plotly_dark",
+        hover_data={
+            "contractSymbol": True,
+            "bid": ":.2f",
+            "ask": ":.2f",
+            "lastPrice": ":.2f",
+            "volume": True,
+            "openInterest": True
+        },
+            title=(
+                f"{ticker} Opts "
+                f"(Exp {min_days_out} - {max_days_out} Days, "
+                f"{ref_price} ±{strike_pct:.0%})"
+            )
         )
-    )
+    
     fig.update_layout(
         showlegend=False,
         scene=dict(
