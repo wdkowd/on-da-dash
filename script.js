@@ -1,4 +1,4 @@
-const API_URL = "https://scheduling-transportation-layout-slim.trycloudflare.com";
+const API_URL = "https://assuming-prohibited-hydrogen-inches.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
