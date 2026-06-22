@@ -1,4 +1,4 @@
-const API_URL = "https://ongoing-andreas-request-illustration.trycloudflare.com";
+const API_URL = "https://recycling-allocation-curve-convenient.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
