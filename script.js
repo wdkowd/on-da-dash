@@ -1,4 +1,4 @@
-const API_URL = "https://blog-effective-candle-beef.trycloudflare.com";
+const API_URL = "https://ability-dealing-format-juice.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
