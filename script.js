@@ -1,4 +1,4 @@
-const API_URL = "https://puerto-experts-publicity-receiving.trycloudflare.com";
+const API_URL = "https://choosing-days-machinery-boards.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
