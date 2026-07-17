@@ -1,4 +1,4 @@
-const API_URL = "https://chem-except-asian-atlanta.trycloudflare.com";
+const API_URL = "https://tag-organization-numeric-premiere.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
