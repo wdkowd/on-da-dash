@@ -1,4 +1,4 @@
-const API_URL = "https://forget-lauderdale-simulations-hiking.trycloudflare.com";
+const API_URL = "https://someone-movements-definitions-pills.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
