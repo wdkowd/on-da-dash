@@ -2,6 +2,8 @@ import subprocess
 import re
 import time
 from pathlib import Path
+import argparse
+
 
 SCRIPT_JS = "script.js"
 
@@ -22,7 +24,7 @@ def update_script_js(tunnel_url):
     print(f"Updated script.js with {tunnel_url}")
 
 
-def main():
+def main(local):
 
     print("Starting FastAPI server...")
 
@@ -39,45 +41,49 @@ def main():
 
     time.sleep(3)
 
-    print("Starting Cloudflare tunnel...")
+    if local:
+        print("Local...")
+        update_script_js("http://localhost:8000")
+    else:
+        print("Starting Cloudflare tunnel...")
 
-    tunnel_proc = subprocess.Popen(
-        [
-            "cloudflared",
-            "tunnel",
-            "--url",
-            "http://localhost:8000",
-        ],
-        stdout=subprocess.PIPE,
-        stderr=subprocess.STDOUT,
-        text=True,
-        bufsize=1,
-    )
+        tunnel_proc = subprocess.Popen(
+            [
+                "cloudflared",
+                "tunnel",
+                "--url",
+                "http://localhost:8000",
+            ],
+            stdout=subprocess.PIPE,
+            stderr=subprocess.STDOUT,
+            text=True,
+            bufsize=1,
+        )
 
-    tunnel_url = None
+        tunnel_url = None
 
-    url_pattern = re.compile(
-        r"https://[a-zA-Z0-9\-]+\.trycloudflare\.com"
-    )
+        url_pattern = re.compile(
+            r"https://[a-zA-Z0-9\-]+\.trycloudflare\.com"
+        )
 
-    for line in tunnel_proc.stdout:
-        print(line, end="")
+        for line in tunnel_proc.stdout:
+            print(line, end="")
 
-        match = url_pattern.search(line)
+            match = url_pattern.search(line)
 
-        if match:
-            tunnel_url = match.group(0)
-            print(f"\nTunnel URL found: {tunnel_url}")
+            if match:
+                tunnel_url = match.group(0)
+                print(f"\nTunnel URL found: {tunnel_url}")
 
-            update_script_js(tunnel_url)
-            subprocess.run(["git", "add", "."])
-            subprocess.run(["git", "commit", "-m", "Update tunnel URL"])
-            subprocess.run(["git", "push"])
-            break
+                update_script_js(tunnel_url)
+                subprocess.run(["git", "add", "."])
+                subprocess.run(["git", "commit", "-m", "Update tunnel URL"])
+                subprocess.run(["git", "push"])
+                break
 
-    if not tunnel_url:
-        print("Failed to find tunnel URL")
-        return
+        if not tunnel_url:
+            print("Failed to find tunnel URL")
+            return
 
     try:
         uvicorn_proc.wait()
@@ -87,5 +93,8 @@ def main():
         tunnel_proc.terminate()
 
 
-if __name__ == "__main__":
-    main()
+# if __name__ == "__main__":
+parser = argparse.ArgumentParser()
+parser.add_argument("--local", action='store_true')
+args = parser.parse_args()
+main(local = args.local)

@@ -4,18 +4,15 @@ body {
     display: flex;
     flex-direction: column;
     font-family: Arial, sans-serif;
-
     background-color: #121212;
     color: #ffffff;
 }
 
 .top-section {
     flex: 1;
-    border-bottom: 1px solid #333;
     display: flex;
-    justify-content: center;
-    align-items: center;
-    overflow: hidden;
+    flex-direction: column;
+    min-height: 0;
     background-color: #1a1a1a;
 }
 
@@ -104,7 +101,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-
     background-color: #181818;
 }
 
@@ -113,12 +109,70 @@ body {
     text-align: center;
 }
 
-#openPlotBtn {
+/* #openPlotBtn {
     padding: 5px 10px;
     cursor: pointer;
     background: #222;
     color: #ccc;
+} */
+
+/* Floating dropdown button */
+.dropdown {
+    position: fixed;
+    bottom: 10px;
+    right: 10px;
+    z-index: 1100;
 }
+
+.dropbtn {
+    padding: 2px 2px;
+    background: #222;
+    color: #ccc;
+    border: 1px solid #444;
+    border-radius: 1px;
+    cursor: pointer;
+    font-size: 8px;
+}
+
+.dropbtn:hover {
+    background: #333;
+}
+
+/* Hidden menu */
+.dropdown-content {
+    display: none;
+    position: absolute;
+    bottom: 110%;      /* Opens upward */
+    right: 0;
+    min-width: 10px;
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 6px;
+    overflow: visible;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.5);
+}
+
+/* Show when active */
+.dropdown.active .dropdown-content {
+    display: block;
+}
+
+
+.dropdown-content button {
+    width: 100%;
+    padding: 10px 10px;
+    background: none;
+    border: none;
+    color: #ccc;
+    text-align: left;
+    cursor: pointer;
+    font-size: 10px;
+}
+
+.dropdown-content button:hover {
+    background: #333;
+}
+
 
 .modal {
     display: none;

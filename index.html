@@ -12,9 +12,20 @@
     <!-- TOP IMAGE -->
 
     <div class="top-section">
-        <img
+        <!-- <img
             id="mainImage"
-            alt="Main Dashboard">
+            alt="Main Dashboard"> -->
+        <div class="iframe-container">
+
+            <iframe
+                id="mainImage"
+                width="100%"
+                height="100%"
+                frameborder="0">
+            </iframe>
+
+        </div>
+
     </div>
 
     <!-- BOTTOM SECTION -->
@@ -35,12 +46,17 @@
 
         </div>
 
-        <div class="controls">
+        <div class="dropdown" id="menu">
 
-            <button id="openPlotBtn">
-                Os
+            <button class="dropbtn">
+                ☰
             </button>
-
+        
+            <div class="dropdown-content">
+                <button id="openPlotBtn"> Os </button>
+                <button id="openLogOddsBtn"> LogOdds </button>
+                <button id="openMnMxMaBtn"> MnMxMa </button>
+            </div>
         </div>
 
     </div>

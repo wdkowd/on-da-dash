@@ -1,9 +1,10 @@
-const API_URL = "https://someone-movements-definitions-pills.trycloudflare.com";
+const API_URL = "https://toys-alternatively-priorities-inexpensive.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
 
-const mainImage = document.getElementById("mainImage");
+const mainImage = 
+    document.getElementById("mainImage");
 
 const dashFrame =
     document.getElementById("dashFrame");
@@ -20,6 +21,10 @@ const openPlotBtn =
 const closeModal =
     document.getElementById("closeModal");
 
+const menu = document.getElementById("menu");
+const button = menu.querySelector(".dropbtn");
+    
+
 
 // ----------------------------------
 // MAIN IMAGE
@@ -28,7 +33,7 @@ const closeModal =
 function loadMainImage() {
 
     mainImage.src =
-        `${API_URL}/image/ZZ.png?t=${Date.now()}`;
+        `${API_URL}/zz/ZZ.html?t=${Date.now()}`;
 
 }
 
@@ -170,6 +175,18 @@ async function checkForUpdates() {
 
 }
 
+// ----------------------------------
+// DROPDOWN
+// ----------------------------------
+
+button.addEventListener("click", (e) => {
+    e.stopPropagation();
+    menu.classList.toggle("active");
+});
+
+document.addEventListener("click", () => {
+    menu.classList.remove("active");
+});
 
 // ----------------------------------
 // OPEN OPTS
@@ -185,7 +202,7 @@ openPlotBtn.onclick =
             currentTabFile.split("_")[0];
 
         openPlotBtn.disabled = true;
-        openPlotBtn.textContent = "...";
+        // openPlotBtn.textContent = "...";
 
         try {
 
@@ -204,7 +221,7 @@ openPlotBtn.onclick =
                 throw new Error();
 
             iframe.src =
-                `${API_URL}/plot/${tabNumber}_opts.html?t=${Date.now()}`;
+                `${API_URL}/plotOpts/${tabNumber}_opts.html?t=${Date.now()}`;
 
             modal.style.display =
                 "block";
@@ -218,12 +235,87 @@ openPlotBtn.onclick =
         finally {
 
             openPlotBtn.disabled = false;
-            openPlotBtn.textContent = "Os";
+            // openPlotBtn.textContent = "Os";
 
         }
 
     };
 
+// ----------------------------------
+// OPEN LOGODDS
+// ----------------------------------
+
+openLogOddsBtn.onclick =
+async () => {
+
+    if (!currentTabFile)
+        return;
+
+    const tabNumber =
+        currentTabFile.split("_")[0];
+
+    openPlotBtn.disabled = true;
+    // openPlotBtn.textContent = "...";
+
+    try {
+        iframe.src =
+            `${API_URL}/plotLogOdds/${tabNumber}_LogOdds.html?t=${Date.now()}`;
+
+        modal.style.display =
+            "block";
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+    }
+    finally {
+
+        openPlotBtn.disabled = false;
+        // openPlotBtn.textContent = "LogOdds";
+
+    }
+
+};
+
+// ----------------------------------
+// OPEN MNMXMA BENCHMARK
+// ----------------------------------
+
+openMnMxMaBtn.onclick =
+async () => {
+
+    if (!currentTabFile)
+        return;
+
+    const tabNumber =
+        currentTabFile.split("_")[0];
+
+    openPlotBtn.disabled = true;
+    // openPlotBtn.textContent = "...";
+
+    try {
+        iframe.src =
+            `${API_URL}/plotMnMxma/${tabNumber}_MnMxMa.html?t=${Date.now()}`;
+
+        modal.style.display =
+            "block";
+
+    }
+    catch(error) {
+
+        console.error(error);
+
+    }
+    finally {
+
+        openPlotBtn.disabled = false;
+        // openPlotBtn.textContent = "MnMxMa";
+
+    }
+
+};
 
 // ----------------------------------
 // CLOSE MODAL

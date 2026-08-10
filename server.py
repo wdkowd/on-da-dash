@@ -11,7 +11,7 @@ from datetime import datetime, timedelta
 
 app = FastAPI()
 
-IMAGE_DIR = Path('/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/images')
+ZZ_DIR = Path('/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/zz')
 
 app.add_middleware(
     CORSMiddleware,
@@ -24,21 +24,24 @@ app.add_middleware(
 @app.get("/status")
 def status():
 
-    png_files = list(IMAGE_DIR.glob("*.png"))
+    zz_files = list(ZZ_DIR.glob("*.html"))
 
-    if not png_files:
+    if not zz_files:
         return {"last_update": 0}
 
     latest_time = max(
         f.stat().st_mtime
-        for f in png_files
+        for f in zz_files
     )
 
     return {"last_update": latest_time}
 
 HTML_DIR_OPTS = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/opts")
 HTML_DIR_PLT = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/overwatch")
-@app.get("/plot/{filename}")
+HTML_DIR_LOGODDS = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/logodds")
+HTML_DIR_MNMXMA = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/mnmxma")
+
+@app.get("/plotOpts/{filename}")
 def get_plot(filename: str):
 
     plot_path = HTML_DIR_OPTS / filename
@@ -51,10 +54,36 @@ def get_plot(filename: str):
 
     return FileResponse(plot_path)
 
-@app.get("/image/{filename}")
-def image(filename: str):
+@app.get("/plotLogOdds/{filename}")
+def get_plot(filename: str):
 
-    image_path = IMAGE_DIR / filename
+    plot_path = HTML_DIR_LOGODDS / filename
+
+    if not plot_path.exists():
+        return JSONResponse(
+            {"error": "plot not found"},
+            status_code=404
+        )
+
+    return FileResponse(plot_path)
+
+@app.get("/plotMnMxma/{filename}")
+def get_plot(filename: str):
+
+    plot_path = HTML_DIR_MNMXMA / filename
+
+    if not plot_path.exists():
+        return JSONResponse(
+            {"error": "plot not found"},
+            status_code=404
+        )
+
+    return FileResponse(plot_path)
+
+@app.get("/zz/{filename}")
+def zz(filename: str):
+
+    image_path = ZZ_DIR / filename
 
     if not image_path.exists():
         return JSONResponse(
