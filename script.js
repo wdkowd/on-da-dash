@@ -1,4 +1,4 @@
-const API_URL = "https://toys-alternatively-priorities-inexpensive.trycloudflare.com";
+const API_URL = "http://localhost:8000";
 
 let lastUpdate = 0;
 let currentTabFile = null;
