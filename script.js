@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = "https://renewal-density-sean-filing.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
@@ -51,6 +51,7 @@ function loadDashGraph() {
         `${API_URL}/dash/${currentTabFile}?t=${Date.now()}`;
 
 }
+
 
 
 // ----------------------------------
@@ -162,7 +163,7 @@ async function checkForUpdates() {
 
             loadMainImage();
 
-            loadDashGraph();
+            // loadDashGraph();
 
         }
 

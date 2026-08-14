@@ -1,4 +1,4 @@
-from fastapi import FastAPI
+from fastapi import FastAPI,HTTPException
 from fastapi.responses import FileResponse, JSONResponse
 from fastapi.middleware.cors import CORSMiddleware
 from pathlib import Path
@@ -11,7 +11,17 @@ from datetime import datetime, timedelta
 
 app = FastAPI()
 
+from pydantic import BaseModel
+import json
+
+app = FastAPI()
+
 ZZ_DIR = Path('/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/zz')
+JSON_DIR_MRKS = "/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/jsons/"
+HTML_DIR_OPTS = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/opts")
+HTML_DIR_PLT = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/overwatch")
+HTML_DIR_LOGODDS = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/logodds")
+HTML_DIR_MNMXMA = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/mnmxma")
 
 app.add_middleware(
     CORSMiddleware,
@@ -36,10 +46,7 @@ def status():
 
     return {"last_update": latest_time}
 
-HTML_DIR_OPTS = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/opts")
-HTML_DIR_PLT = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/overwatch")
-HTML_DIR_LOGODDS = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/logodds")
-HTML_DIR_MNMXMA = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/mnmxma")
+
 
 @app.get("/plotOpts/{filename}")
 def get_plot(filename: str):
@@ -120,6 +127,7 @@ def dash(filename: str):
         )
 
     return FileResponse(dash_path)
+
 
 def plot_near_money_option_oi(ticker,min_days_out=3,max_days_out=14,strike_pct=0.02,return_df=True):
     stock = yf.Ticker(ticker)
@@ -207,3 +215,62 @@ def generate_plot_endpoint(tab):
     return {
         "success": True
     }
+
+@app.post("/api/save-markers/{filename}")
+def save_markers(filename: str, data: dict):
+
+    markers = {
+        "marker_1": data.get("marker_1"),
+        "marker_2": data.get("marker_2"),
+        "marker_3": data.get("marker_3"),
+        "datetime": data.get("datetime")
+    }
+
+    with open(JSON_DIR_MRKS+filename+".json", "w") as f:
+        json.dump(markers, f, indent=4)
+
+    return {
+        "success": True,
+        "markers": markers
+    }
+
+@app.get("/api/get-markers/{filename}")
+async def get_markers(filename: str):
+
+    # print(f"Marker request received: {filename}")
+
+    json_file = JSON_DIR_MRKS+filename+".json"
+
+    # print(f"Looking for JSON file: {json_file}")
+
+    try:
+
+        with open(
+            json_file,
+            "r",
+            encoding="utf-8"
+        ) as f:
+
+            data = json.load(f)
+
+        # print(f"Loaded marker data: {data}")
+
+        return data
+
+    except json.JSONDecodeError as e:
+
+        print(f"Invalid JSON: {e}")
+
+        raise HTTPException(
+            status_code=500,
+            detail=f"Invalid JSON: {e}"
+        )
+
+    except Exception as e:
+
+        print(f"Error reading marker file: {e}")
+
+        raise HTTPException(
+            status_code=500,
+            detail=str(e)
+        )
