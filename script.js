@@ -1,4 +1,4 @@
-const API_URL = "https://henry-appeals-unsigned-moral.trycloudflare.com";
+const API_URL = "http://localhost:8000";
 
 let lastUpdate = 0;
 let currentTabFile = null;
@@ -15,15 +15,21 @@ const modal =
 const iframe =
     document.getElementById("plotFrame");
 
-const openPlotBtn =
-    document.getElementById("openPlotBtn");
+const openOptsPlotBtn =
+    document.getElementById("openOptsPlotBtn");
+
+const openLogOddsBtn =
+    document.getElementById("openLogOddsBtn");
+
+const openMnMxMaBtn =
+    document.getElementById("openMnMxMaBtn");
 
 const closeModal =
     document.getElementById("closeModal");
 
-const menu = document.getElementById("menu");
-const button = menu.querySelector(".dropbtn");
-    
+const menu_graphs = document.getElementById("menu_graphs");
+
+const button_graphs = menu_graphs.querySelector(".dropbtn_graph");
 
 
 // ----------------------------------
@@ -31,10 +37,8 @@ const button = menu.querySelector(".dropbtn");
 // ----------------------------------
 
 function loadMainImage() {
-
     mainImage.src =
         `${API_URL}/zz/ZZ.html?t=${Date.now()}`;
-
 }
 
 
@@ -180,20 +184,21 @@ async function checkForUpdates() {
 // DROPDOWN
 // ----------------------------------
 
-button.addEventListener("click", (e) => {
+button_graphs.addEventListener("click", (e) => {
     e.stopPropagation();
-    menu.classList.toggle("active");
+    menu_graphs.classList.toggle("active");
 });
 
 document.addEventListener("click", () => {
-    menu.classList.remove("active");
+    menu_graphs.classList.remove("active");
 });
+
 
 // ----------------------------------
 // OPEN OPTS
 // ----------------------------------
 
-openPlotBtn.onclick =
+openOptsPlotBtn.onclick =
     async () => {
 
         if (!currentTabFile)
@@ -202,14 +207,13 @@ openPlotBtn.onclick =
         const tabNumber =
             currentTabFile.split("_")[0];
 
-        openPlotBtn.disabled = true;
-        // openPlotBtn.textContent = "...";
+        openOptsPlotBtn.disabled = true;
 
         try {
 
             const response =
                 await fetch(
-                    `${API_URL}/generate_plot/${tabNumber}`,
+                    `${API_URL}/generate_opts_plot/${tabNumber}`,
                     {
                         method: "POST"
                     }
@@ -235,8 +239,7 @@ openPlotBtn.onclick =
         }
         finally {
 
-            openPlotBtn.disabled = false;
-            // openPlotBtn.textContent = "Os";
+            openOptsPlotBtn.disabled = false;
 
         }
 
@@ -255,8 +258,7 @@ async () => {
     const tabNumber =
         currentTabFile.split("_")[0];
 
-    openPlotBtn.disabled = true;
-    // openPlotBtn.textContent = "...";
+    openLogOddsBtn.disabled = true;
 
     try {
         iframe.src =
@@ -273,8 +275,7 @@ async () => {
     }
     finally {
 
-        openPlotBtn.disabled = false;
-        // openPlotBtn.textContent = "LogOdds";
+        openLogOddsBtn.disabled = false;
 
     }
 
@@ -293,8 +294,7 @@ async () => {
     const tabNumber =
         currentTabFile.split("_")[0];
 
-    openPlotBtn.disabled = true;
-    // openPlotBtn.textContent = "...";
+    openMnMxMaBtn.disabled = true;
 
     try {
         iframe.src =
@@ -311,12 +311,12 @@ async () => {
     }
     finally {
 
-        openPlotBtn.disabled = false;
-        // openPlotBtn.textContent = "MnMxMa";
+        openMnMxMaBtn.disabled = false;
 
     }
 
 };
+
 
 // ----------------------------------
 // CLOSE MODAL

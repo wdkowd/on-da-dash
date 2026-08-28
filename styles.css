@@ -109,22 +109,16 @@ body {
     text-align: center;
 }
 
-/* #openPlotBtn {
-    padding: 5px 10px;
-    cursor: pointer;
-    background: #222;
-    color: #ccc;
-} */
 
 /* Floating dropdown button */
-.dropdown {
+.dropdown_graphs {
     position: fixed;
     bottom: 10px;
     right: 10px;
     z-index: 1100;
 }
 
-.dropbtn {
+.dropbtn_graph {
     padding: 2px 2px;
     background: #222;
     color: #ccc;
@@ -134,12 +128,12 @@ body {
     font-size: 8px;
 }
 
-.dropbtn:hover {
+.dropbtn_graph:hover {
     background: #333;
 }
 
 /* Hidden menu */
-.dropdown-content {
+.dropdown_graphs-content {
     display: none;
     position: absolute;
     bottom: 110%;      /* Opens upward */
@@ -153,12 +147,11 @@ body {
 }
 
 /* Show when active */
-.dropdown.active .dropdown-content {
+.dropdown_graphs.active .dropdown_graphs-content {
     display: block;
 }
 
-
-.dropdown-content button {
+.dropdown_graphs-content button {
     width: 100%;
     padding: 10px 10px;
     background: none;
@@ -169,9 +162,10 @@ body {
     font-size: 10px;
 }
 
-.dropdown-content button:hover {
+.dropdown_graphs-content button:hover {
     background: #333;
 }
+
 
 
 .modal {
