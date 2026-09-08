@@ -9,6 +9,8 @@ import pandas as pd
 import plotly.express as px
 from datetime import datetime, timedelta, timezone
 from pydantic import BaseModel
+from filelock import FileLock
+
 import json
 
 def plot_near_money_option_oi(ticker,min_days_out=3,max_days_out=14,strike_pct=0.02,return_df=True):
@@ -92,7 +94,7 @@ def plot_near_money_option_oi(ticker,min_days_out=3,max_days_out=14,strike_pct=0
 
 
 def purgeMarkers():
-    folder = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/jsons/")
+    folder = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/jsons/markers/")
 
     for json_file in folder.glob("*.json"):
         try:
@@ -110,3 +112,47 @@ def purgeMarkers():
             print(f"Error processing {json_file.name}: {e}")
     return(True)
 
+def sendMarkers():
+    folder = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/jsons/markers/")
+
+    for json_file in folder.glob("*.json"):
+        try:
+            with json_file.open("r", encoding="utf-8") as f:
+                data = json.load(f)
+
+            data["datetime"] = datetime.now(timezone.utc).isoformat()
+
+            with json_file.open("w", encoding="utf-8") as f:
+                json.dump(data, f, indent=4)
+        except Exception as e:
+            print(f"Error processing {json_file.name}: {e}")
+    return(True)
+
+def get_latest_zzdf():
+    json_path = '/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/zzJsons/zzDF.json'
+    lock = FileLock(f"{json_path}.lock")
+    with lock:
+        df = pd.read_json(
+            json_path,
+            orient="records"
+        )
+    return df
+
+def get_latest_live(fname):
+    json_path = '/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/jsons/lives/'+fname+"_live.json"
+    lock = FileLock(f"{json_path}.lock")
+    with lock:
+        with open(json_path, 'r') as f:
+            data = json.load(f)            
+    df = pd.json_normalize(data)
+    return(df)
+
+def get_latest_ldo(fname):
+    json_path = '/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/jsons/ldo/'+fname+"_ldo.json"
+    lock = FileLock(f"{json_path}.lock")
+    with lock:
+        df = pd.read_json(
+            json_path,
+            orient="records"
+        )
+    return df

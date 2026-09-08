@@ -10,6 +10,7 @@ import plotly.express as px
 from datetime import datetime, timedelta
 from pydantic import BaseModel
 import json
+import jsonify
 
 import server_helps as sh
 
@@ -20,7 +21,7 @@ app = FastAPI()
 app = FastAPI()
 
 ZZ_DIR = Path('/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/zz')
-JSON_DIR_MRKS = "/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/jsons/"
+JSON_DIR_MRKS = "/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/jsons/markers/"
 HTML_DIR_OPTS = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/opts")
 HTML_DIR_PLT = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/overwatch")
 HTML_DIR_LOGODDS = Path("/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/graphs/logodds")
@@ -103,6 +104,7 @@ def zz(filename: str):
 
     return FileResponse(image_path)
 
+
 @app.get("/tabs")
 def tabs():
 
@@ -149,6 +151,15 @@ def purge_markers():
 
     return {
         "success": purge
+    }
+
+@app.post("/api/send-markers")
+def send_markers():
+
+    send = sh.sendMarkers()
+
+    return {
+        "success": send
     }
 
 @app.post("/api/save-markers/{filename}")
@@ -208,3 +219,74 @@ async def get_markers(filename: str):
             status_code=500,
             detail=str(e)
         )
+    
+
+@app.get("/zzgraph-data")
+def zzgraph_data():
+    df = sh.get_latest_zzdf()
+    df = df.set_index("tck")
+
+    heat_cols = ["up2", "up1", "mid", "dn1", "dn2"]
+
+    z = []
+
+    for level in heat_cols:
+        row = []
+
+        for _, data in df.iterrows():
+
+            if data["call"]:
+                value = data[level]
+            else:
+                value = (
+                    3 if data[level] == 1
+                    else 4 if data[level] == 2
+                    else 0
+                )
+
+            row.append(value)
+
+        z.append(row)
+
+    tick_colors = [
+        "orange" if hold
+        else "teal" if has_mrkr
+        else "grey"
+        for has_mrkr, hold
+        in zip(df["has_mrkrs"], df["hold"])
+    ]
+
+    ticktext = [
+        f"<span style='color:{c}'>{tck}</span>"
+        for tck, c in zip(df.index, tick_colors)
+    ]
+
+    title = [tstmp for tstmp in df['tstmp']]
+
+    return {
+        "z": z,
+        "ticktext": ticktext,
+        "tickvals": list(range(len(df))),
+        "title": title[0]
+    }
+
+@app.get("/live-data/{filename}")
+def live_data(filename:str):
+    df = sh.get_latest_live(filename.split("_")[0])
+    
+    return {
+        "currHigh":df['currHigh'][0],
+        "currLow":df['currLow'][0],
+        "currPrice":df['currPrice'][0],
+        "tTime":df['tTime'][0]
+    }
+
+@app.get("/live-ldo/{filename}")
+def live_ldo(filename:str):
+    df = sh.get_latest_ldo(filename.split("_")[0])
+    return {
+        "offset":df['offset'].tolist(),
+        "color":df['color'].tolist(),
+        "relOds":df['relOds'].tolist(),
+        "dt":df['dt'].tolist()
+    }

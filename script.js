@@ -1,4 +1,4 @@
-const API_URL = "http://localhost:8000";
+const API_URL = "https://appropriate-zus-trustee-anyway.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
@@ -36,9 +36,35 @@ const button_graphs = menu_graphs.querySelector(".dropbtn_graph");
 // MAIN IMAGE
 // ----------------------------------
 
-function loadMainImage() {
-    mainImage.src =
-        `${API_URL}/zz/ZZ.html?t=${Date.now()}`;
+async function loadMainImage() {
+    // mainImage.src = `${API_URL}/zz/ZZ.html?t=${Date.now()}`;
+    mainImage.src = `${API_URL}/zz/ZZ.html`;
+}
+
+async function updateZZGraph() {
+
+    try {
+        const response = await fetch(
+            `${API_URL}/zzgraph-data?t=${Date.now()}`
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        mainImage.contentWindow.postMessage(
+            {
+                type: "updateZZGraph",
+                data: data
+            },
+            "*"
+        );
+
+    } catch (error) {
+        console.error("Graph update failed:", error);
+    }
 }
 
 
@@ -56,6 +82,55 @@ function loadDashGraph() {
 
 }
 
+async function updateDashGraph() {
+    if (!currentTabFile)
+        return;
+    try {
+        const response = await fetch(
+            `${API_URL}/live-data/${currentTabFile}?t=${Date.now()}`
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        dashFrame.contentWindow.postMessage(
+            {
+                type: "updateLiveGraph",
+                data: data
+            },
+            "*"
+        );
+
+    } catch (error) {
+        console.error("Live Graph update failed:", error);
+    }
+
+    try {
+        const response = await fetch(
+            `${API_URL}/live-ldo/${currentTabFile}?t=${Date.now()}`
+        );
+
+        if (!response.ok) {
+            throw new Error(`HTTP ${response.status}`);
+        }
+
+        const data = await response.json();
+
+        dashFrame.contentWindow.postMessage(
+            {
+                type: "updateLDOGraph",
+                data: data
+            },
+            "*"
+        );
+
+    } catch (error) {
+        console.error("LDO Graph update failed:", error);
+    }
+}
 
 
 // ----------------------------------
@@ -353,10 +428,9 @@ async function initialize() {
 
     loadMainImage();
 
-    setInterval(
-        checkForUpdates,
-        2000
-    );
+    setInterval(updateZZGraph, 2000);
+    setInterval(updateDashGraph, 2000);
+
 
 }
 
