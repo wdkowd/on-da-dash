@@ -129,7 +129,7 @@ def sendMarkers():
     return(True)
 
 def get_latest_zzdf():
-    json_path = '/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/zzJsons/zzDF.json'
+    json_path = '/Users/kiran/Documents/STONKZ/semiSober/on-da-dash/jsons/zz/zzDF.json'
     lock = FileLock(f"{json_path}.lock")
     with lock:
         df = pd.read_json(

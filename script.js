@@ -1,4 +1,4 @@
-const API_URL = "https://appropriate-zus-trustee-anyway.trycloudflare.com";
+const API_URL = "https://build-courtesy-treasury-debug.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
