@@ -1,4 +1,4 @@
-const API_URL = "https://build-courtesy-treasury-debug.trycloudflare.com";
+const API_URL = "https://caused-parent-bandwidth-kansas.trycloudflare.com";
 
 let lastUpdate = 0;
 let currentTabFile = null;
