@@ -138,10 +138,19 @@ def dash(filename: str):
 @app.post("/generate_opts_plot/{tab}")
 def generate_plot_endpoint(tab):
 
-    optsdf = sh.plot_near_money_option_oi(tab)
+    optsdf = sh.plotAllMrkOpts(tab)
 
     return {
-        "success": True
+        "success": optsdf
+    }
+
+@app.post("/api/update-zzmarkers")
+def update_ZZmarkers():
+
+    zzupdt = sh.updateMrkrsZZ()
+
+    return {
+        "success": zzupdt
     }
 
 @app.post("/api/purge-markers")
